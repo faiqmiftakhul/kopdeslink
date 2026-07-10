@@ -178,6 +178,27 @@ gcloud run deploy kopdeslink --image $IMG --region $LOC --allow-unauthenticated 
   --set-env-vars "DATA_SOURCE=db,DB_SSL=true,TABLE_PREFIX=indonesiacerah_,FOCUS_KODE_WILAYAH=53.71,MATCH_RADIUS_KM=15,DB_HOST=<DB_HOST>,DB_PORT=5432,DB_DATABASE=<DB_DATABASE>,DB_USERNAME=<DB_USERNAME>,DB_PASSWORD=<DB_PASSWORD>"
 ```
 
+### 5.2 "Forbidden — Your client does not have permission to get URL /" (buka URL Cloud Run)
+
+Layanan ter-deploy tapi **privat** (butuh autentikasi) — biasanya `--allow-unauthenticated`
+ditolak saat deploy. Jadikan publik (binding level service, sering diizinkan walau IAM project tidak):
+```powershell
+gcloud run services add-iam-policy-binding kopdeslink `
+  --region asia-southeast2 `
+  --member="allUsers" `
+  --role="roles/run.invoker"
+```
+Refresh URL — harusnya sudah bisa dibuka.
+
+Jika muncul error kebijakan organisasi (`constraints/iam.allowedPolicyMemberDomains` /
+"Domain Restricted Sharing" / `allUsers` ditolak) → **project bersama panitia melarang akses
+publik ke Cloud Run**. Tidak bisa dibuat publik → pakai **Fix C (tunnel)** untuk URL demo.
+
+(Sekunder) kalau IAM sudah di-grant tapi masih 403, pastikan ingress publik:
+```powershell
+gcloud run services update kopdeslink --region asia-southeast2 --ingress=all
+```
+
 ### Lihat log
 
 ```powershell
