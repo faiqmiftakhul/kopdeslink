@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.env
+.env.local
+*.env
+gcloud_database.txt
+metadata_database_hackathon_final.xlsx
+npm-debug.log
+README.md
+PRD.md
+QNA-JURI.md
+*.pdf

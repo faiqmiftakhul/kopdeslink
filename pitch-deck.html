@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KopdesLink — Pitch Deck</title>
+<style>
+  :root{
+    --brand:#065366; --brand-dark:#04404f; --brand-light:#0b6a82;
+    --leaf:#5faf78; --leaf-dark:#4a9463; --ink:#0f2c33; --muted:#5b7480;
+    --line:#dbe7ea; --bg:#eef4f5;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+  .bar{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);padding:10px 16px;display:flex;gap:12px;align-items:center;font-size:13px;color:var(--muted)}
+  .bar b{color:var(--brand)}
+  .deck{max-width:1280px;margin:20px auto;padding:0 12px;display:flex;flex-direction:column;gap:22px}
+  .slide{position:relative;width:100%;aspect-ratio:16/9;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 10px 30px rgba(6,83,102,.08);overflow:hidden;padding:52px 60px;display:flex;flex-direction:column}
+  .slide .num{position:absolute;bottom:20px;right:26px;font-size:12px;color:#9fb4bb}
+  .slide .brandfoot{position:absolute;bottom:18px;left:60px;font-size:12px;color:#9fb4bb;letter-spacing:.04em}
+  .kicker{font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--leaf-dark)}
+  h1{font-size:52px;line-height:1.05;color:var(--brand-dark);letter-spacing:-.02em}
+  h2{font-size:34px;line-height:1.1;color:var(--brand-dark);letter-spacing:-.01em}
+  h3{font-size:19px;color:var(--brand)}
+  p,li{font-size:18px;line-height:1.5;color:#2b444c}
+  .lead{font-size:22px;color:#33525b}
+  .muted{color:var(--muted)}
+  .row{display:flex;gap:18px}
+  .col{flex:1}
+  .chip{display:inline-block;padding:5px 12px;border-radius:999px;font-size:13px;font-weight:700}
+  .chip-brand{background:rgba(6,83,102,.10);color:var(--brand)}
+  .chip-leaf{background:rgba(95,175,120,.16);color:var(--leaf-dark)}
+  .card{border:1px solid var(--line);border-radius:14px;padding:18px 20px;background:#fbfdfd}
+  .card.hi{border-color:rgba(95,175,120,.5);background:rgba(95,175,120,.08)}
+  .stat{font-size:40px;font-weight:800;color:var(--brand);line-height:1}
+  .stat.leaf{color:var(--leaf-dark)}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  ul{padding-left:20px}
+  li{margin:7px 0}
+  .arrowflow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700;color:var(--brand-dark)}
+  .arrowflow .st{background:#fff;border:1.5px solid var(--brand);border-radius:10px;padding:8px 12px;font-size:15px}
+  .arrowflow .ar{color:var(--leaf-dark);font-weight:800}
+  .tag{font-size:12px;font-weight:700;color:#fff;background:var(--leaf-dark);padding:3px 9px;border-radius:6px}
+  .split{display:flex;gap:26px;flex:1;min-height:0}
+  .fill{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .logo{display:inline-grid;place-items:center;width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--leaf));color:#fff;font-weight:900;font-size:20px}
+  table{width:100%;border-collapse:collapse;font-size:16px}
+  td,th{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.05em}
+  .hgrad{height:6px;background:linear-gradient(90deg,var(--brand),var(--brand-light),var(--leaf));border-radius:6px;margin-bottom:22px;width:100%}
+  .big{font-size:26px;font-weight:800;color:var(--brand-dark)}
+  .vs{display:flex;gap:18px}
+  .vs .box{flex:1;border-radius:14px;padding:20px;border:1px solid var(--line)}
+  .vs .v{background:rgba(6,83,102,.06)}
+  .vs .h{background:rgba(95,175,120,.12);border-color:rgba(95,175,120,.4)}
+  @media print{
+    @page{size:1280px 720px;margin:0}
+    body{background:#fff}
+    .bar{display:none}
+    .deck{margin:0;padding:0;gap:0;max-width:none}
+    .slide{border:none;border-radius:0;box-shadow:none;page-break-after:always;width:1280px;height:720px;aspect-ratio:auto}
+  }
+</style>
+</head>
+<body>
+<div class="bar">
+  <img src="kopdeslink_logo.png" alt="KopdesLink" style="height:26px;width:auto" />
+  <span><b>KopdesLink</b> — Pitch Deck (12 slide)</span>
+  <span style="margin-left:auto">Ekspor PDF: <b>Ctrl/Cmd + P</b> → Tujuan “Save as PDF” → Layout <b>Landscape</b> → Margins <b>None</b></span>
+</div>
+
+<div class="deck">
+
+  <!-- 1 COVER -->
+  <section class="slide" style="background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 55%,var(--leaf-dark) 100%);color:#fff">
+    <div style="display:flex;align-items:center;gap:16px">
+      <span style="display:inline-flex;align-items:center;justify-content:center;width:58px;height:58px;border-radius:14px;background:#fff"><img src="kopdeslink_logo.png" alt="KopdesLink" style="height:44px;width:auto;display:block" /></span>
+      <div>
+        <div style="font-weight:800;font-size:20px">KopdesLink</div>
+        <div style="opacity:.8;font-size:13px;letter-spacing:.08em;text-transform:uppercase">Tim Indonesia Cerah</div>
+      </div>
+    </div>
+    <div class="fill">
+      <div class="kicker" style="color:#bfe6cd">Hackathon Kemenkop 2026 · Tema 1 &amp; 2</div>
+      <h1 style="color:#fff;max-width:16ch;margin-top:10px">Jaringan Pasok Gotong-Royong Antar Koperasi Desa</h1>
+      <p class="lead" style="color:#dcecef;max-width:52ch;margin-top:16px">
+        SIMKOPDES Hub menghubungkan tiap Kopdes ke <b style="color:#fff">pemerintah</b> (vertikal).
+        KopdesLink menghubungkan Kopdes <b style="color:#fff">satu sama lain</b> (horizontal) —
+        mengubah data pasokan yang sudah terpusat menjadi <b style="color:#bfe6cd">transaksi gotong-royong nyata</b>.
+      </p>
+    </div>
+    <div style="display:flex;gap:10px">
+      <span class="chip" style="background:rgba(255,255,255,.16);color:#fff">POS &amp; Stok Real-Time</span>
+      <span class="chip" style="background:rgba(255,255,255,.16);color:#fff">Matchmaking Antar-Kopdes</span>
+      <span class="chip" style="background:rgba(255,255,255,.16);color:#fff">Dashboard Pemerintah</span>
+    </div>
+    <div class="brandfoot" style="color:rgba(255,255,255,.6)">indonesiacerah · KopdesLink</div>
+    <div class="num" style="color:rgba(255,255,255,.6)">01</div>
+  </section>
+
+  <!-- 2 MASALAH -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Masalah</div>
+    <h2 style="margin-top:6px">Stok kosong di satu Kopdes, surplus menganggur di tetangga — tak saling terlihat</h2>
+    <div class="split" style="margin-top:22px">
+      <div class="fill" style="gap:14px">
+        <div class="card"><h3>1 · Kekosongan stok (stockout)</h3><p class="muted">Barang habis → omzet hilang, pelayanan anggota terganggu, pengurus mencari pasokan ke distributor jauh & mahal.</p></div>
+        <div class="card"><h3>2 · Stok mati &amp; modal beku</h3><p class="muted">Surplus sembako/obat menganggur, berisiko rusak/kedaluwarsa — modal desa mengendap.</p></div>
+        <div class="card"><h3>3 · Silo horizontal</h3><p class="muted">Kopdes A tidak tahu Kopdes B 4 km punya surplus barang yang sama. Gotong-royong ekonomi antar-desa mati.</p></div>
+      </div>
+      <div class="fill" style="justify-content:center">
+        <div class="card hi" style="text-align:center">
+          <div class="stat leaf">80.000</div>
+          <p class="muted" style="margin-top:6px">Kopdes Merah Putih dibangun (Inpres 9/2025) — makin banyak node, makin besar kerugian akibat silo pasokan.</p>
+          <hr style="border:none;border-top:1px solid var(--line);margin:16px 0">
+          <div class="stat">97%</div>
+          <p class="muted" style="margin-top:6px">laba koperasi milik desa (82% ke warga via kupon). Setiap omzet hilang = manfaat warga hilang.</p>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">KopdesLink</div><div class="num">02</div>
+  </section>
+
+  <!-- 3 INSIGHT / GAP -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Insight</div>
+    <h2 style="margin-top:6px">SIMKOPDES Hub sudah memusatkan data — tapi hanya untuk pemantauan, bukan aksi antar-Kopdes</h2>
+    <div class="vs" style="margin-top:26px">
+      <div class="box v">
+        <span class="chip chip-brand">Sudah ada · Vertikal</span>
+        <h3 style="margin:12px 0 6px">SIMKOPDES Hub</h3>
+        <ul>
+          <li>Registrasi, profil, potensi desa</li>
+          <li>Kesehatan keuangan (EWS), RAT, kelembagaan</li>
+          <li>Inventarisasi lahan + integrasi lintas-K/L (pajak, Dukcapil, dana desa, Agrinas)</li>
+          <li>92,69% (76.733) Kopdes terintegrasi</li>
+        </ul>
+        <p class="muted" style="margin-top:10px"><b>Fungsi:</b> mencatat &amp; mengawasi. Kopdes → pemerintah.</p>
+      </div>
+      <div style="display:flex;align-items:center;font-size:30px;color:var(--leaf-dark);font-weight:800">+</div>
+      <div class="box h">
+        <span class="chip chip-leaf">Celah · Horizontal</span>
+        <h3 style="margin:12px 0 6px">KopdesLink</h3>
+        <ul>
+          <li>Mempertemukan <b>kekosongan</b> &amp; <b>surplus</b> antar-Kopdes</li>
+          <li>Rekomendasi tetangga terdekat + eksekusi transaksi B2B</li>
+          <li>Alur manajer: cari → ajukan → setujui → transfer</li>
+          <li>Peta aliran barang untuk Agrinas/Dinas</li>
+        </ul>
+        <p class="muted" style="margin-top:10px"><b>Fungsi:</b> bertindak. Kopdes ↔ Kopdes.</p>
+      </div>
+    </div>
+    <p class="big" style="margin-top:22px">Data pasokan sudah terpusat di Hub — tapi belum ada yang mengubahnya jadi transaksi gotong-royong. Itulah celah kami.</p>
+    <div class="brandfoot">KopdesLink</div><div class="num">03</div>
+  </section>
+
+  <!-- 4 SOLUSI -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Solusi</div>
+    <h2 style="margin-top:6px">Satu aplikasi, tiga lapisan — POS di bawah, jaringan gotong-royong di tengah, kebijakan di atas</h2>
+    <div class="grid3" style="margin-top:26px;flex:1">
+      <div class="card"><span class="chip chip-brand">Lapisan 1</span><h3 style="margin:12px 0 6px">POS &amp; Stok Real-Time</h3><p class="muted">Jual → stok turun otomatis. Stok opname digital. Prediksi “habis dalam ± X hari” (moving average).</p></div>
+      <div class="card hi"><span class="chip chip-leaf">Lapisan 2 · Inti</span><h3 style="margin:12px 0 6px">Matchmaking Antar-Kopdes</h3><p class="muted">Stok kritis → pindai surplus Kopdes terdekat (radius, geospasial) → tampil di peta → ajukan permintaan B2B → pemasok setujui → stok berpindah.</p></div>
+      <div class="card"><span class="chip chip-brand">Lapisan 3</span><h3 style="margin:12px 0 6px">Dashboard Pemerintah</h3><p class="muted">Peta aliran barang antar-desa, barang paling rawan kosong, omzet terselamatkan — untuk Agrinas/Dinas.</p></div>
+    </div>
+    <div class="card" style="margin-top:18px;background:rgba(6,83,102,.05);border-color:rgba(6,83,102,.15)">
+      <p><b style="color:var(--brand-dark)">Kebaruan tunggal:</b> menjadikan surplus satu koperasi sebagai solusi kekosongan koperasi lain — otomatis, berbasis lokasi, pada skala nasional. Belum ada di ekosistem SIMKOPDES/Agrinas.</p>
+    </div>
+    <div class="brandfoot">KopdesLink</div><div class="num">04</div>
+  </section>
+
+  <!-- 5 CARA KERJA / DEMO FLOW -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Cara Kerja</div>
+    <h2 style="margin-top:6px">Satu skenario menyentuh ketiga lapisan dalam &lt; 3 menit</h2>
+    <div class="arrowflow" style="margin:28px 0">
+      <span class="st">Jual Beras di POS</span><span class="ar">→</span>
+      <span class="st">Alert: “habis ± 1 hari”</span><span class="ar">→</span>
+      <span class="st">Cari surplus tetangga (peta)</span><span class="ar">→</span>
+      <span class="st">Ajukan permintaan B2B</span><span class="ar">→</span>
+      <span class="st">Pemasok setujui</span><span class="ar">→</span>
+      <span class="st">Stok berpindah</span><span class="ar">→</span>
+      <span class="st">Dashboard update</span>
+    </div>
+    <div class="grid3" style="flex:1">
+      <div class="card"><h3>Prediktif, bukan reaktif</h3><p class="muted">Peringatan muncul sebelum stok benar-benar habis — pemesanan ulang proaktif.</p></div>
+      <div class="card hi"><h3>Gotong-royong terdigitalisasi</h3><p class="muted">Kekosongan satu Kopdes ditutup surplus tetangga terdekat — bukan menunggu distributor pusat.</p></div>
+      <div class="card"><h3>Transparan untuk negara</h3><p class="muted">Tiap transaksi tercatat &amp; terpetakan → bahan kebijakan pasokan Agrinas/Dinas.</p></div>
+    </div>
+    <div class="brandfoot">KopdesLink</div><div class="num">05</div>
+  </section>
+
+  <!-- 6 BUKTI DATA NYATA -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Bukti</div>
+    <h2 style="margin-top:6px">Berjalan di atas DATA NYATA pemerintah — bukan data karangan</h2>
+    <div class="split" style="margin-top:20px">
+      <div class="fill" style="gap:12px">
+        <p class="lead">MVP membaca langsung database resmi hackathon (proksi SIMKOPDES) dan menjalankan skenario asli:</p>
+        <div class="card hi">
+          <h3>📍 Kota Kupang, NTT — 7 Koperasi Kelurahan Merah Putih asli</h3>
+          <p class="muted" style="margin-top:6px">Produk <b>Beras SPHP 5KG</b> (barcode nyata 8994209001796), jarak antar-Kopdes maks 8,3 km.</p>
+          <table style="margin-top:10px">
+            <tr><th>Kopdes</th><th>Stok Beras</th><th>Peran</th></tr>
+            <tr><td>Madani Tirta Bakunase</td><td style="color:#c0392b;font-weight:700">−100</td><td>butuh (backorder)</td></tr>
+            <tr><td>Angkasa Fatubesi (3,7 km)</td><td style="color:var(--leaf-dark);font-weight:700">1000</td><td>surplus → pemasok</td></tr>
+            <tr><td>Kelurahan Asri (5,8 km)</td><td style="color:var(--leaf-dark);font-weight:700">385</td><td>surplus</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="fill" style="justify-content:center;gap:14px">
+        <div class="card" style="text-align:center"><div class="stat">1.026</div><p class="muted">koperasi nyata (semua berkoordinat)</p></div>
+        <div class="card" style="text-align:center"><div class="stat leaf">2.752</div><p class="muted">barcode dipakai &gt;1 Kopdes → kunci pencocokan lintas-koperasi</p></div>
+        <div class="card" style="text-align:center"><div class="stat">Rp10 jt</div><p class="muted">omzet terselamatkan dari 1 transaksi demo</p></div>
+      </div>
+    </div>
+    <div class="brandfoot">KopdesLink</div><div class="num">06</div>
+  </section>
+
+  <!-- 7 ARSITEKTUR -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Arsitektur</div>
+    <h2 style="margin-top:6px">Hybrid: baca system-of-record, tambah lapisan aksi di atasnya</h2>
+    <div class="split" style="margin-top:20px">
+      <div class="fill" style="gap:14px">
+        <div class="card"><h3>1 · Ingest — satu titik integrasi</h3><p class="muted">Baca data pasokan minimum dari <b>API/DB SIMKOPDES Hub</b> (read-only). Karena Hub sudah mengagregasi nasional, kami tak perlu 80.000 koneksi atau federated query.</p></div>
+        <div class="card hi"><h3>2 · Read-model + matchmaking</h3><p class="muted">Salinan ringkas ter-index geospasial (Haversine/PostGIS), dipartisi per wilayah. Pencocokan lintas-Kopdes via <b>kode_barcode</b>. Baca cepat, tahan gagal (CQRS).</p></div>
+        <div class="card"><h3>3 · Write-back</h3><p class="muted">Transaksi B2B ditulis-balik ke Hub (produksi). SIMKOPDES tetap sumber kebenaran — kami tak pernah memutasinya diam-diam.</p></div>
+      </div>
+      <div class="fill" style="justify-content:center">
+        <div class="card" style="background:#fbfdfd">
+          <h3 style="margin-bottom:10px">Kenapa skala 80.000 bukan beban</h3>
+          <ul>
+            <li><b>Lokalitas:</b> matchmaking selalu lokal (radius ekonomis) — “1 vs puluhan tetangga”, bukan “80.000 vs 80.000”.</li>
+            <li><b>Sharding</b> per provinsi/kabupaten.</li>
+            <li><b>Event-driven</b> (webhook/CDC), bukan polling penuh.</li>
+          </ul>
+          <hr style="border:none;border-top:1px solid var(--line);margin:14px 0">
+          <p class="muted"><b>Stack:</b> Next.js PWA · Postgres (read-only) · Leaflet/OSM · GCP Cloud Run. Offline-friendly untuk konektivitas desa.</p>
+        </div>
+      </div>
+    </div>
+    <div class="brandfoot">KopdesLink</div><div class="num">07</div>
+  </section>
+
+  <!-- 8 KESELARASAN -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Keselarasan Kebijakan · Why Now</div>
+    <h2 style="margin-top:6px">Enabler program pemerintah, tepat saat fondasinya siap</h2>
+    <div class="grid4" style="margin-top:26px">
+      <div class="card"><div class="stat">Inpres<br>9/2025</div><p class="muted" style="margin-top:8px">Payung 80.000 Kopdes + 7 unit usaha wajib.</p></div>
+      <div class="card"><div class="stat">Agrinas<br>2 tahun</div><p class="muted" style="margin-top:8px">Operator awal → diserahkan ke desa. Kami alat transisi menuju kemandirian.</p></div>
+      <div class="card"><div class="stat leaf">92,69%</div><p class="muted" style="margin-top:8px">Kopdes sudah terintegrasi SIMKOPDES — data siap dihubungkan.</p></div>
+      <div class="card"><div class="stat leaf">97% → 82%</div><p class="muted" style="margin-top:8px">laba ke desa → warga (kupon). Efisiensi stok = manfaat langsung warga.</p></div>
+    </div>
+    <div class="card hi" style="margin-top:22px">
+      <p><b style="color:var(--leaf-dark)">Menembak 2 tema TOR sekaligus:</b> Tema 1 (Peningkatan Volume Usaha) &amp; Tema 2 (Optimalisasi Potensi Desa). Challenge question TOR bahkan menuliskan persis <i>“mempertemukan koperasi dengan buyer/offtaker yang tepat”</i> dan contoh solusi <i>“Supply Chain Monitoring System”.</i></p>
+    </div>
+    <div class="brandfoot">KopdesLink</div><div class="num">08</div>
+  </section>
+
+  <!-- 9 DAMPAK -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Dampak &amp; Metrik</div>
+    <h2 style="margin-top:6px">Empat metrik terukur, semua bermuara ke laba desa</h2>
+    <div class="grid4" style="margin-top:26px">
+      <div class="card" style="text-align:center"><div class="stat leaf">Rp</div><h3 style="margin-top:8px">Omzet terselamatkan</h3><p class="muted">penjualan yang tak jadi hilang</p></div>
+      <div class="card" style="text-align:center"><div class="stat">−%</div><h3 style="margin-top:8px">Biaya logistik terpangkas</h3><p class="muted">tetangga vs distributor pusat</p></div>
+      <div class="card" style="text-align:center"><div class="stat">⏱</div><h3 style="margin-top:8px">Waktu pemenuhan</h3><p class="muted">jam, bukan hari</p></div>
+      <div class="card" style="text-align:center"><div class="stat leaf">🤝</div><h3 style="margin-top:8px">Transaksi gotong-royong</h3><p class="muted">jumlah B2B antar-Kopdes</p></div>
+    </div>
+    <div class="split" style="margin-top:24px">
+      <div class="card fill" style="justify-content:center">
+        <p class="lead">Rantai dampak:</p>
+        <p class="arrowflow" style="margin-top:10px"><span class="st">Efisiensi stok</span><span class="ar">→</span><span class="st">Laba koperasi naik</span><span class="ar">→</span><span class="st">97% ke desa</span><span class="ar">→</span><span class="st">82% ke warga (kupon)</span></p>
+      </div>
+    </div>
+    <div class="brandfoot">KopdesLink</div><div class="num">09</div>
+  </section>
+
+  <!-- 10 MODEL BISNIS -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Model Bisnis</div>
+    <h2 style="margin-top:6px">Selaras program — menambah nilai bersih ke desa, bukan menggerusnya</h2>
+    <div class="grid3" style="margin-top:26px;flex:1">
+      <div class="card"><span class="chip chip-leaf">Transaksi</span><h3 style="margin:12px 0 6px">Fee B2B kecil</h3><p class="muted">Komisi tipis per matchmaking yang berhasil — hanya saat ada nilai tercipta.</p></div>
+      <div class="card hi"><span class="chip chip-leaf">Utama</span><h3 style="margin:12px 0 6px">SaaS / lisensi negara</h3><p class="muted">Infrastruktur nasional untuk Kemenkop–Agrinas sebagai lapisan jaringan resmi di atas Hub.</p></div>
+      <div class="card"><span class="chip chip-leaf">Premium</span><h3 style="margin:12px 0 6px">Analitik Dinas</h3><p class="muted">Modul intelijen rantai pasok wilayah untuk pemda/Dinas Koperasi.</p></div>
+    </div>
+    <div class="card" style="margin-top:18px"><p class="muted">Fase awal fokus <b>adopsi &amp; bukti dampak</b>, bukan monetisasi agresif — karena 97% laba milik desa, model harus pro-desa sejak hari pertama.</p></div>
+    <div class="brandfoot">KopdesLink</div><div class="num">10</div>
+  </section>
+
+  <!-- 11 ROADMAP -->
+  <section class="slide">
+    <div class="hgrad"></div>
+    <div class="kicker">Roadmap</div>
+    <h2 style="margin-top:6px">Dari MVP data-nyata ke infrastruktur pasok nasional</h2>
+    <div class="grid4" style="margin-top:28px;flex:1">
+      <div class="card"><span class="tag">Fase 0 · Sekarang</span><h3 style="margin:12px 0 6px">MVP terbukti</h3><p class="muted">Berjalan di data nyata (Kupang). POS + prediksi + matchmaking + dashboard.</p></div>
+      <div class="card"><span class="tag">Fase 1</span><h3 style="margin:12px 0 6px">Konektor API Hub</h3><p class="muted">Integrasi read resmi ke SIMKOPDES Hub; pilot 1 kecamatan bersama Dinas &amp; Agrinas.</p></div>
+      <div class="card"><span class="tag">Fase 2</span><h3 style="margin:12px 0 6px">Write-back &amp; skala</h3><p class="muted">Transaksi dua arah, sharding regional, event stream, prediksi ML.</p></div>
+      <div class="card"><span class="tag">Fase 3</span><h3 style="margin:12px 0 6px">Nasional</h3><p class="muted">Tulang punggung redistribusi Agrinas &amp; peta rantai pasok Kopdes real-time untuk Kemenkop.</p></div>
+    </div>
+    <div class="brandfoot">KopdesLink</div><div class="num">11</div>
+  </section>
+
+  <!-- 12 TIM / CLOSING -->
+  <section class="slide" style="background:linear-gradient(135deg,var(--brand) 0%,var(--brand-dark) 60%,var(--leaf-dark) 100%);color:#fff">
+    <div class="kicker" style="color:#bfe6cd">Tim Indonesia Cerah</div>
+    <h2 style="color:#fff;margin-top:8px;max-width:20ch">Menghubungkan 80.000 Kopdes jadi satu jaringan gotong-royong</h2>
+    <div class="grid4" style="margin-top:26px">
+      <div class="card" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.2)"><h3 style="color:#fff">Product / Riset</h3><p style="color:#dcecef">Masalah, kebijakan, dampak</p></div>
+      <div class="card" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.2)"><h3 style="color:#fff">Frontend / UX</h3><p style="color:#dcecef">PWA, peta, alur demo</p></div>
+      <div class="card" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.2)"><h3 style="color:#fff">Backend / Data</h3><p style="color:#dcecef">Integrasi DB nyata, matchmaking</p></div>
+      <div class="card" style="background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.2)"><h3 style="color:#fff">Pitch / Bisnis</h3><p style="color:#dcecef">Model &amp; presentasi</p></div>
+    </div>
+    <div class="fill" style="justify-content:flex-end">
+      <p class="lead" style="color:#fff;max-width:60ch"><b>Hub vertikal untuk pemantauan. KopdesLink horizontal untuk aksi.</b> Kekosongan stok satu Kopdes, ditutup surplus tetangga — otomatis, pada skala nasional.</p>
+      <p style="color:#bfe6cd;margin-top:14px;font-size:14px">Penggunaan AI (disclosure TOR Bagian J): ide inti asli tim; AI dipakai sebagai alat bantu riset, dokumentasi, &amp; coding assistant.</p>
+    </div>
+    <div class="brandfoot" style="color:rgba(255,255,255,.6)">indonesiacerah · KopdesLink</div>
+    <div class="num" style="color:rgba(255,255,255,.6)">12</div>
+  </section>
+
+</div>
+</body>
+</html>

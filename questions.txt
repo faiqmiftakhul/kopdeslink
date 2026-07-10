@@ -1,0 +1,26 @@
+1. Judul Ide / Solusi Aplikasi
+
+KopdesLink — Jaringan Rantai Pasok Gotong-Royong Antar Koperasi Desa
+(Sistem Stok Opname & Penjualan Real-Time yang Terhubung Antar-Kopdes)
+
+
+2. Problem Statement yang Disasar (maksimal 150 kata)
+
+Koperasi Desa Merah Putih yang berkembang pesat menghadapi kelemahan mendasar pada manajemen stok dan rantai pasok. Pencatatan stok dan penjualan masih manual, sehingga sering terjadi kekosongan barang (stockout) maupun stok mati yang tidak terdeteksi—mengakibatkan kehilangan omzet dan kerugian. Saat stok habis, pengurus harus mencari pasokan ke distributor yang jauh, lambat, dan berbiaya tinggi, padahal sering kali Kopdes tetangga memiliki kelebihan stok barang yang sama. Tidak adanya sistem yang menghubungkan data stok antar-Kopdes membuat potensi gotong-royong ekonomi antar-koperasi tidak termanfaatkan. Akibatnya volume usaha koperasi sulit tumbuh, pelayanan anggota terganggu, dan posisi tawar koperasi terhadap distributor lemah. Dibutuhkan sistem terintegrasi yang mencatat stok dan penjualan secara real-time sekaligus menghubungkan Kopdes terdekat, agar kekosongan stok satu koperasi dapat ditutup oleh surplus koperasi tetangga.
+
+
+3. Deskripsi Solusi Teknis & Kebaruan Ide (maksimal 300 kata)
+
+KopdesLink adalah aplikasi manajemen stok dan Point-of-Sale (POS) yang terintegrasi dengan jaringan rantai pasok antar-Kopdes, terdiri dari tiga lapisan:
+
+1) POS & Stok Real-Time. Setiap transaksi penjualan otomatis mengurangi stok. Pengurus dapat melakukan stok opname digital secara cepat melalui ponsel.
+
+2) Smart Reorder Alert + Prediksi. Saat stok suatu barang menyentuh ambang batas, sistem memberi peringatan. Dengan analisis tren penjualan sederhana, sistem memprediksi barang yang akan habis sehingga pemesanan ulang bersifat proaktif, bukan reaktif.
+
+3) Inter-Kopdes Matchmaking (inti kebaruan). Ketika sebuah Kopdes membutuhkan barang, sistem otomatis memindai Kopdes terdekat yang memiliki surplus stok serupa, lalu menampilkan jarak, harga, dan kuantitas tersedia di peta. Pengurus cukup mengajukan permintaan, dan Kopdes pemilik surplus menerima notifikasi untuk menyetujui transaksi B2B antar-koperasi.
+
+Kebaruan: aplikasi POS-stok umumnya berhenti di level satu toko. KopdesLink mengubah data stok individual menjadi jaringan pasok kolektif—mewujudkan prinsip gotong-royong koperasi secara digital. Kelebihan stok satu koperasi menjadi solusi kekosongan koperasi lain: memangkas biaya logistik, mempercepat pemenuhan stok, dan memperkuat posisi tawar kolektif terhadap distributor.
+
+Data agregat juga disajikan dalam dashboard untuk Dinas Koperasi dan Kementerian Koperasi: memetakan barang yang paling sering kosong serta alur distribusi antar-desa, sebagai dasar kebijakan digitalisasi rantai pasok nasional.
+
+Teknologi: aplikasi berbasis web/mobile (PWA) yang offline-friendly agar dapat digunakan di desa dengan koneksi terbatas, database real-time untuk sinkronisasi stok, dan layanan geospasial untuk pencarian Kopdes terdekat berbasis radius. Arsitektur dirancang ringan dan mudah diadopsi pengurus yang awam teknologi.

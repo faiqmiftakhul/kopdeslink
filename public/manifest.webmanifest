@@ -1,0 +1,12 @@
+{
+  "name": "KopdesLink — Jaringan Pasok Antar Kopdes",
+  "short_name": "KopdesLink",
+  "description": "Stok real-time & matchmaking gotong-royong antar Koperasi Desa Merah Putih",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f5f8f8",
+  "theme_color": "#065366",
+  "icons": [
+    { "src": "/kopdeslink_logo.png", "sizes": "434x485", "type": "image/png", "purpose": "any" }
+  ]
+}

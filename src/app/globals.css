@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply text-slate-800 antialiased;
+  background:
+    radial-gradient(1200px 500px at 100% -10%, rgba(95, 175, 120, 0.10), transparent 60%),
+    radial-gradient(1200px 600px at -10% 0%, rgba(6, 83, 102, 0.08), transparent 55%),
+    #f5f8f8;
+  min-height: 100vh;
+}
+
+/* Leaflet: pastikan peta punya tinggi & tak ketiban z-index */
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  z-index: 0;
+}
+
+.card {
+  @apply bg-white rounded-2xl border border-slate-200/80 shadow-soft;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition
+         disabled:opacity-50 disabled:cursor-not-allowed;
+}
+.btn-primary { @apply btn bg-brand text-white hover:bg-brand-dark shadow-sm; }
+.btn-secondary { @apply btn bg-leaf text-white hover:bg-leaf-dark shadow-sm; }
+.btn-ghost { @apply btn border border-slate-300 bg-white text-slate-700 hover:bg-slate-50; }
+
+.badge { @apply inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold; }
+
+/* Judul bagian dengan aksen garis */
+.section-title { @apply flex items-center gap-2 font-bold text-brand-dark; }
