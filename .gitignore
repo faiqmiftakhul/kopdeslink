@@ -33,3 +33,6 @@ yarn-error.log*
 # editor
 .vscode/
 .idea/
+
+# Materi persiapan juri internal — jangan publik
+QNA-JURI.md
