@@ -2,6 +2,8 @@
 
 > Menghasilkan **URL demo publik** (Deliverable #3 TOR). Aplikasi = Next.js 14 (output `standalone`) + `Dockerfile` yang sudah siap. Sumber data: DB bersama panitia (read-only) atau mode `mock`.
 >
+> 🪟 **Perintah di bawah untuk Windows PowerShell.** (Continuation baris pakai backtick `` ` `` — pastikan tidak ada spasi setelahnya.)
+>
 > ⚠️ **Rahasia (host/username/password DB) diambil dari `gcloud_database.txt` — JANGAN ketik nilai aslinya ke file yang di-commit.** Di panduan ini semua ditulis sebagai `<...>`.
 
 ---
@@ -18,7 +20,7 @@
 
 ## 1. Login & Konfigurasi Awal
 
-```bash
+```powershell
 # login (buka browser)
 gcloud auth login
 
@@ -33,9 +35,6 @@ gcloud config set run/region asia-southeast2
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com
 ```
 
-> Jika di sesi interaktif Claude Code, jalankan login lewat prefix `!`:
-> ketik `! gcloud auth login` di prompt agar outputnya masuk ke sesi.
-
 ---
 
 ## 2. Deploy
@@ -43,20 +42,20 @@ gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregi
 `gcloud run deploy --source .` akan otomatis mem-build image dari `Dockerfile`
 lewat Cloud Build, lalu men-deploy-nya. **Kredensial DB dikirim saat deploy (runtime), bukan dari repo.**
 
+> ℹ️ Semua env digabung dalam **satu** `--set-env-vars` (kalau ditulis berkali-kali, hanya yang terakhir dipakai).
+
 ### Opsi A — Cepat (env var langsung) — cocok untuk sprint
 
-```bash
-gcloud run deploy kopdeslink \
-  --source . \
-  --region asia-southeast2 \
-  --allow-unauthenticated \
-  --port 8080 \
-  --memory 512Mi \
-  --cpu 1 \
-  --min-instances 0 \
-  --set-env-vars "DATA_SOURCE=db,DB_SSL=true,TABLE_PREFIX=indonesiacerah_,FOCUS_KODE_WILAYAH=53.71,MATCH_RADIUS_KM=15" \
-  --set-env-vars "DB_HOST=<DB_HOST>,DB_PORT=5432,DB_DATABASE=<DB_DATABASE>,DB_USERNAME=<DB_USERNAME>" \
-  --set-env-vars "DB_PASSWORD=<DB_PASSWORD>"
+```powershell
+gcloud run deploy kopdeslink `
+  --source . `
+  --region asia-southeast2 `
+  --allow-unauthenticated `
+  --port 8080 `
+  --memory 512Mi `
+  --cpu 1 `
+  --min-instances 0 `
+  --set-env-vars "DATA_SOURCE=db,DB_SSL=true,TABLE_PREFIX=indonesiacerah_,FOCUS_KODE_WILAYAH=53.71,MATCH_RADIUS_KM=15,DB_HOST=<DB_HOST>,DB_PORT=5432,DB_DATABASE=<DB_DATABASE>,DB_USERNAME=<DB_USERNAME>,DB_PASSWORD=<DB_PASSWORD>"
 ```
 
 - `<...>` diisi dari `gcloud_database.txt`.
@@ -64,23 +63,26 @@ gcloud run deploy kopdeslink \
 
 ### Opsi B — Lebih aman (password via Secret Manager)
 
-```bash
-# simpan password DB sebagai secret (sekali saja)
-printf '%s' '<DB_PASSWORD>' | gcloud secrets create kopdeslink-db-pass --data-file=-
+```powershell
+# simpan password DB sebagai secret (sekali saja) — pakai file sementara tanpa newline
+Set-Content -NoNewline -Path pass.txt -Value "<DB_PASSWORD>"
+gcloud secrets create kopdeslink-db-pass --data-file=pass.txt
+Remove-Item pass.txt
 
 # beri akses service account Cloud Run ke secret
-PROJECT_NUMBER=$(gcloud projects describe $(gcloud config get-value project) --format='value(projectNumber)')
-gcloud secrets add-iam-policy-binding kopdeslink-db-pass \
-  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
+$PROJECT_ID = (gcloud config get-value project)
+$PROJECT_NUMBER = (gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+gcloud secrets add-iam-policy-binding kopdeslink-db-pass `
+  --member="serviceAccount:$PROJECT_NUMBER-compute@developer.gserviceaccount.com" `
   --role="roles/secretmanager.secretAccessor"
 
 # deploy — password diinjeksi dari secret
-gcloud run deploy kopdeslink \
-  --source . \
-  --region asia-southeast2 \
-  --allow-unauthenticated \
-  --port 8080 --memory 512Mi \
-  --set-env-vars "DATA_SOURCE=db,DB_SSL=true,TABLE_PREFIX=indonesiacerah_,FOCUS_KODE_WILAYAH=53.71,MATCH_RADIUS_KM=15,DB_HOST=<DB_HOST>,DB_PORT=5432,DB_DATABASE=<DB_DATABASE>,DB_USERNAME=<DB_USERNAME>" \
+gcloud run deploy kopdeslink `
+  --source . `
+  --region asia-southeast2 `
+  --allow-unauthenticated `
+  --port 8080 --memory 512Mi `
+  --set-env-vars "DATA_SOURCE=db,DB_SSL=true,TABLE_PREFIX=indonesiacerah_,FOCUS_KODE_WILAYAH=53.71,MATCH_RADIUS_KM=15,DB_HOST=<DB_HOST>,DB_PORT=5432,DB_DATABASE=<DB_DATABASE>,DB_USERNAME=<DB_USERNAME>" `
   --update-secrets "DB_PASSWORD=kopdeslink-db-pass:latest"
 ```
 
@@ -91,23 +93,21 @@ Proses build+deploy ± 3–6 menit. URL muncul di akhir, mis:
 
 ## 3. Uji Setelah Deploy
 
-```bash
+```powershell
 # ambil URL layanan
-gcloud run services describe kopdeslink --region asia-southeast2 --format='value(status.url)'
+$URL = (gcloud run services describe kopdeslink --region asia-southeast2 --format="value(status.url)")
+$URL
+
+# cek cepat (pakai cmdlet PowerShell, bukan curl)
+(Invoke-WebRequest "$URL/").StatusCode          # harus 200
+Invoke-RestMethod "$URL/api/kopdes" | Select-Object -ExpandProperty kopdes | Measure-Object
 ```
 
-Buka URL, lalu cek:
+Lalu buka `$URL` di browser dan cek:
 - [ ] Layar login muncul → masuk `juri` / `kopdeslink2026` (atau **Lanjut sebagai tamu**)
 - [ ] Data nyata tampil (7 Kopdes Kota Kupang) — atau data mock bila `DATA_SOURCE=mock`
 - [ ] Alur demo jalan: pilih **Madani Tirta Bakunase** → **Cari Tetangga** → ajukan → setujui → dashboard
 - [ ] Dites dari perangkat lain (HP), bukan hanya laptop tim
-
-Cek cepat dari terminal:
-```bash
-URL=$(gcloud run services describe kopdeslink --region asia-southeast2 --format='value(status.url)')
-curl -s -o /dev/null -w "home %{http_code}\n" "$URL/"
-curl -s "$URL/api/kopdes" | head -c 200; echo
-```
 
 ---
 
@@ -116,8 +116,8 @@ curl -s "$URL/api/kopdes" | head -c 200; echo
 Cukup jalankan ulang perintah `gcloud run deploy` yang sama — Cloud Run membuat revisi baru
 dan mengalihkan trafik otomatis. Untuk mengubah **hanya** env (tanpa build ulang):
 
-```bash
-gcloud run services update kopdeslink --region asia-southeast2 \
+```powershell
+gcloud run services update kopdeslink --region asia-southeast2 `
   --update-env-vars "FOCUS_KODE_WILAYAH=53.71,MATCH_RADIUS_KM=15"
 ```
 
@@ -128,12 +128,12 @@ gcloud run services update kopdeslink --region asia-southeast2 \
 | Gejala | Penyebab & Solusi |
 |---|---|
 | `pg_hba.conf ... no encryption` / koneksi DB gagal | Wajib `DB_SSL=true`. Pastikan env ini ter-set. |
-| Halaman 500 / data kosong | Cek log: `gcloud run services logs read kopdeslink --region asia-southeast2 --limit 50`. Biasanya kredensial DB salah atau `FOCUS_KODE_WILAYAH` tak ada datanya. |
-| `permission denied for schema public` saat init | Normal — kredensial panitia **read-only**. KopdesLink memang **tidak** menulis ke DB (mode hybrid, tulis di memori app). Jangan jalankan `db:init` ke DB bersama. |
+| Halaman 500 / data kosong | Cek log (lihat di bawah). Biasanya kredensial DB salah atau `FOCUS_KODE_WILAYAH` tak ada datanya. |
+| `permission denied for schema public` saat init | Normal — kredensial panitia **read-only**. KopdesLink memang **tidak** menulis ke DB (mode hybrid). Jangan jalankan `db:init` ke DB bersama. |
 | Build gagal di Cloud Build | Cek `Dockerfile` & `package-lock.json` ikut ter-commit. Lihat log build di Console → Cloud Build. |
-| Container gagal start / port | Cloud Run mengirim `PORT=8080`; `Dockerfile` sudah `ENV PORT=8080` + `node server.js` (Next standalone menghormati `PORT`). Pastikan `--port 8080`. |
-| Lambat saat pertama diakses (cold start) | Set `--min-instances 1` agar selalu hangat saat penjurian (menambah sedikit biaya kredit). |
-| Kehabisan memori saat build/run | Naikkan `--memory 512Mi` → `1Gi`. |
+| Container gagal start / port | Cloud Run mengirim `PORT=8080`; `Dockerfile` sudah `ENV PORT=8080` + `node server.js`. Pastikan `--port 8080`. |
+| Lambat saat pertama diakses (cold start) | Set `--min-instances 1` agar selalu hangat saat penjurian. |
+| Kehabisan memori | Naikkan `--memory 512Mi` → `1Gi`. |
 
 ### 5.1 Error 403 `storage.objects.get` saat `deploy --source` (paling umum di project bersama)
 
@@ -146,37 +146,43 @@ default service account** belum punya izin membacanya. Di **project bersama pani
 tidak bisa mengubah IAM sendiri.
 
 **Fix C — tercepat & anti-ribet (rekomendasi): tunnel dari app lokal (tanpa GCP).**
-```bash
-npm run build && npm start                 # http://localhost:3000
-# terminal lain:
+```powershell
+npm run build
+npm start                                   # jalan di http://localhost:3000
+# di jendela PowerShell lain:
 npx cloudflared tunnel --url http://localhost:3000    # atau: ngrok http 3000
 ```
 Dapat URL publik `https://...trycloudflare.com` → pakai untuk Deliverable #3. Cukup untuk penjurian.
 
 **Fix A — beri izin (jika Anda admin IAM di project):**
-```bash
-PROJECT_ID=$(gcloud config get-value project)
-NUM=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
-SA="${NUM}-compute@developer.gserviceaccount.com"
+```powershell
+$PROJECT_ID = (gcloud config get-value project)
+$NUM = (gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+$SA = "$NUM-compute@developer.gserviceaccount.com"
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA" --role="roles/storage.objectViewer"
 gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA" --role="roles/cloudbuild.builds.builder"
 # lalu ulangi: gcloud run deploy --source .
 ```
 `PERMISSION_DENIED` pada `setIamPolicy` → bukan admin project bersama → pakai Fix C/B atau minta panitia.
 
-**Fix B — build image sendiri lalu deploy `--image` (butuh Docker + izin Artifact Registry):**
-```bash
-LOC=asia-southeast2; PROJECT_ID=$(gcloud config get-value project)
-gcloud artifacts repositories create kopdeslink --repository-format=docker --location=$LOC 2>/dev/null || true
-gcloud auth configure-docker $LOC-docker.pkg.dev -q
-IMG=$LOC-docker.pkg.dev/$PROJECT_ID/kopdeslink/app:latest
-docker build -t $IMG . && docker push $IMG
-gcloud run deploy kopdeslink --image $IMG --region $LOC --allow-unauthenticated --port 8080 --memory 512Mi \
+**Fix B — build image sendiri lalu deploy `--image` (butuh Docker Desktop + izin Artifact Registry):**
+```powershell
+$LOC = "asia-southeast2"
+$PROJECT_ID = (gcloud config get-value project)
+gcloud artifacts repositories create kopdeslink --repository-format=docker --location=$LOC 2>$null  # abaikan bila sudah ada
+gcloud auth configure-docker "$LOC-docker.pkg.dev" -q
+$IMG = "$LOC-docker.pkg.dev/$PROJECT_ID/kopdeslink/app:latest"
+docker build -t $IMG .
+docker push $IMG
+gcloud run deploy kopdeslink --image $IMG --region $LOC --allow-unauthenticated --port 8080 --memory 512Mi `
   --set-env-vars "DATA_SOURCE=db,DB_SSL=true,TABLE_PREFIX=indonesiacerah_,FOCUS_KODE_WILAYAH=53.71,MATCH_RADIUS_KM=15,DB_HOST=<DB_HOST>,DB_PORT=5432,DB_DATABASE=<DB_DATABASE>,DB_USERNAME=<DB_USERNAME>,DB_PASSWORD=<DB_PASSWORD>"
 ```
 
-Lihat log real-time:
-```bash
+### Lihat log
+
+```powershell
+gcloud run services logs read kopdeslink --region asia-southeast2 --limit 50
+# real-time:
 gcloud run services logs tail kopdeslink --region asia-southeast2
 ```
 
@@ -184,9 +190,9 @@ gcloud run services logs tail kopdeslink --region asia-southeast2
 
 ## 6. Hemat Kredit (opsional, setelah penjurian)
 
-```bash
+```powershell
 # hapus layanan agar berhenti memakai kredit
-gcloud run services delete kopdeslink --region asia-southeast2
+gcloud run services delete kopdeslink --region asia-southeast2 --quiet
 ```
 `--min-instances 0` (default di Opsi A) sudah membuat biaya ~nol saat tidak diakses.
 
