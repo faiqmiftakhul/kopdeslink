@@ -135,6 +135,46 @@ gcloud run services update kopdeslink --region asia-southeast2 \
 | Lambat saat pertama diakses (cold start) | Set `--min-instances 1` agar selalu hangat saat penjurian (menambah sedikit biaya kredit). |
 | Kehabisan memori saat build/run | Naikkan `--memory 512Mi` → `1Gi`. |
 
+### 5.1 Error 403 `storage.objects.get` saat `deploy --source` (paling umum di project bersama)
+
+```
+INVALID_ARGUMENT: could not resolve source ... <NOMOR>-compute@developer.gserviceaccount.com
+does not have storage.objects.get access to ... run-sources-...zip
+```
+**Penyebab:** `deploy --source` meng-upload kode ke bucket `run-sources-...`, tapi **Compute Engine
+default service account** belum punya izin membacanya. Di **project bersama panitia**, Anda mungkin
+tidak bisa mengubah IAM sendiri.
+
+**Fix C — tercepat & anti-ribet (rekomendasi): tunnel dari app lokal (tanpa GCP).**
+```bash
+npm run build && npm start                 # http://localhost:3000
+# terminal lain:
+npx cloudflared tunnel --url http://localhost:3000    # atau: ngrok http 3000
+```
+Dapat URL publik `https://...trycloudflare.com` → pakai untuk Deliverable #3. Cukup untuk penjurian.
+
+**Fix A — beri izin (jika Anda admin IAM di project):**
+```bash
+PROJECT_ID=$(gcloud config get-value project)
+NUM=$(gcloud projects describe $PROJECT_ID --format='value(projectNumber)')
+SA="${NUM}-compute@developer.gserviceaccount.com"
+gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA" --role="roles/storage.objectViewer"
+gcloud projects add-iam-policy-binding $PROJECT_ID --member="serviceAccount:$SA" --role="roles/cloudbuild.builds.builder"
+# lalu ulangi: gcloud run deploy --source .
+```
+`PERMISSION_DENIED` pada `setIamPolicy` → bukan admin project bersama → pakai Fix C/B atau minta panitia.
+
+**Fix B — build image sendiri lalu deploy `--image` (butuh Docker + izin Artifact Registry):**
+```bash
+LOC=asia-southeast2; PROJECT_ID=$(gcloud config get-value project)
+gcloud artifacts repositories create kopdeslink --repository-format=docker --location=$LOC 2>/dev/null || true
+gcloud auth configure-docker $LOC-docker.pkg.dev -q
+IMG=$LOC-docker.pkg.dev/$PROJECT_ID/kopdeslink/app:latest
+docker build -t $IMG . && docker push $IMG
+gcloud run deploy kopdeslink --image $IMG --region $LOC --allow-unauthenticated --port 8080 --memory 512Mi \
+  --set-env-vars "DATA_SOURCE=db,DB_SSL=true,TABLE_PREFIX=indonesiacerah_,FOCUS_KODE_WILAYAH=53.71,MATCH_RADIUS_KM=15,DB_HOST=<DB_HOST>,DB_PORT=5432,DB_DATABASE=<DB_DATABASE>,DB_USERNAME=<DB_USERNAME>,DB_PASSWORD=<DB_PASSWORD>"
+```
+
 Lihat log real-time:
 ```bash
 gcloud run services logs tail kopdeslink --region asia-southeast2
