@@ -30,7 +30,7 @@ export default function Home() {
         <div className="grid gap-3 p-5 sm:grid-cols-3">
           <Feature n="1" title="POS & Stok Real-Time" desc="Jual → stok turun otomatis. Prediksi kapan barang habis." href="/pos" cta="Buka Kasir" />
           <Feature n="2" title="Matchmaking Antar-Kopdes" desc="Stok kritis? Temukan surplus Kopdes tetangga di peta." href="/matchmaking" cta="Cari Tetangga" highlight />
-          <Feature n="3" title="Dashboard Pemerintah" desc="Peta aliran barang & barang rawan kosong untuk Agrinas/Dinas." href="/dashboard" cta="Lihat Dashboard" />
+          <Feature n="3" title="Dashboard Pemerintah" desc="Peta aliran barang & barang rawan kosong untuk Kementerian/Dinas." href="/dashboard" cta="Lihat Dashboard" />
         </div>
       </section>
 
@@ -46,7 +46,7 @@ export default function Home() {
           <Step n={2}>Buka <b>Stok & Alert</b> → muncul peringatan “akan habis dalam ± X hari”.</Step>
           <Step n={3}>Klik <b>Cari dari Kopdes Tetangga</b> → lihat surplus Kopdes terdekat di peta, ajukan permintaan.</Step>
           <Step n={4}>Ganti Kopdes ke <b>pemasok</b> → buka <b>Permintaan</b> → <b>Setujui</b>.</Step>
-          <Step n={5}>Ganti peran ke <b>Agrinas/Dinas</b> → <b>Dashboard</b> menampilkan aliran gotong-royong & dampaknya.</Step>
+          <Step n={5}>Ganti peran ke <b>Kementerian/Dinas</b> → <b>Dashboard</b> menampilkan aliran gotong-royong & dampaknya.</Step>
         </ol>
       </section>
     </div>

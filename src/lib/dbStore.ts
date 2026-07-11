@@ -3,7 +3,7 @@ import { query } from './db';
 import { FOCUS_KODE_WILAYAH } from './env';
 import { parseKoordinat } from './geo';
 import type { StockRaw } from './derive';
-import type { Kopdes, Produk } from './types';
+import type { Kopdes, Produk, RegionalItem } from './types';
 
 // ============================================================================
 // dbRead — LOADER READ-ONLY dari DB bersama hackathon.
@@ -98,10 +98,53 @@ export async function loadStock(): Promise<StockRaw[]> {
       unit: r.unit ?? '',
       kategori: '',
       qty: Number(r.qty) || 0,
-      ambang_batas: Math.max(5, Math.round(avg * 3)),
-      buffer_surplus: Math.max(5, Math.round(avg * 2)),
+      // ambang (reorder point) default 30 karung untuk kopdes gerai bila data penjualan sparse
+      ambang_batas: Math.max(30, Math.round(avg * 3)),
+      buffer_surplus: Math.max(15, Math.round(avg * 2)),
       harga_jual: Number(r.harga_jual) || 0,
       avg_daily_sales: avg,
     } as StockRaw;
   });
+}
+
+// Sebaran barang rawan kosong per provinsi SE-INDONESIA (tanpa filter fokus).
+// Untuk peta nasional pemerintah: barang apa yang paling kosong di tiap wilayah.
+export async function loadRegionalStockout(): Promise<RegionalItem[]> {
+  const rows = await query<any>(
+    `SELECT w.provinsi, p.nama_produk, pr.koordinat_dibulatkan, i.koperasi_ref
+       FROM inventaris_produk i
+       JOIN produk_koperasi p ON p.produk_sample_id = i.produk_sample_id
+       JOIN referensi_koperasi_wilayah kw ON kw.koperasi_ref = i.koperasi_ref
+       JOIN referensi_wilayah w ON w.kode_wilayah = kw.kode_wilayah
+       JOIN profil_koperasi pr ON pr.koperasi_ref = i.koperasi_ref
+      WHERE i.stok <= 0 AND pr.koordinat_dibulatkan IS NOT NULL
+        AND p.nama_produk NOT ILIKE '%jasa%'`
+  );
+
+  interface Agg { latSum: number; lngSum: number; n: number; kopdes: Set<string>; prod: Map<string, number>; }
+  const byProv = new Map<string, Agg>();
+  for (const r of rows) {
+    const c = parseKoordinat(r.koordinat_dibulatkan);
+    if (!c || !r.provinsi) continue;
+    let g = byProv.get(r.provinsi);
+    if (!g) { g = { latSum: 0, lngSum: 0, n: 0, kopdes: new Set(), prod: new Map() }; byProv.set(r.provinsi, g); }
+    g.latSum += c[0]; g.lngSum += c[1]; g.n++;
+    g.kopdes.add(r.koperasi_ref);
+    g.prod.set(r.nama_produk, (g.prod.get(r.nama_produk) ?? 0) + 1);
+  }
+
+  const out: RegionalItem[] = [];
+  for (const [wilayah, g] of byProv) {
+    let top = ''; let topN = 0;
+    for (const [name, cnt] of g.prod) if (cnt > topN) { topN = cnt; top = name; }
+    out.push({
+      wilayah,
+      lat: g.latSum / g.n,
+      lng: g.lngSum / g.n,
+      kritis_count: g.n,
+      kopdes_count: g.kopdes.size,
+      top_produk: top,
+    });
+  }
+  return out.sort((a, b) => b.kritis_count - a.kritis_count);
 }

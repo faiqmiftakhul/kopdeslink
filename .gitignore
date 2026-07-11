@@ -36,3 +36,14 @@ yarn-error.log*
 
 # Materi persiapan juri internal — jangan publik
 QNA-JURI.md
+
+# Panduan deploy lokal (jangan publik)
+COOLIFY-DEPLOY.md
+COOLIFY-FINISH.md
+DEPLOY-GITHUB.md
+DEPLOY-RENDER.md
+
+# Aset & catatan lokal (jangan publik)
+fm.png
+ym.jpg
+slide-improvement.txt

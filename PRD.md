@@ -56,7 +56,7 @@ Setiap keputusan teknis di PRD ini diikat ke fakta di atas:
 - **Karena Agrinas operator 2 tahun lalu diserahkan ke desa** → ada **peran/role "Agrinas/Dinas"** di dashboard agregat, menegaskan alat ini berguna bagi operator saat ini *dan* desa mandiri nanti.
 - **Karena unit usaha berbasis stok fisik (sembako, apotek, pergudangan)** → modul POS & stok fokus ke kategori barang nyata program (sembako, pupuk, LPG, obat).
 - **Karena skema bagi hasil 97% ke desa** → dashboard menonjolkan metrik **omzet terselamatkan & biaya logistik terpangkas** = laba naik = manfaat warga naik.
-- **Karena desa punya koneksi terbatas** → PWA offline-friendly, sinkronisasi saat online.
+- **Karena desa punya koneksi terbatas** → dibangun sebagai **PWA installable**; modul POS diarahkan **offline-first** (antrean transaksi lokal lalu sinkron saat online) sebagai roadmap, sedangkan matchmaking tetap online karena butuh data lintas-Kopdes.
 
 ### 1.4 Keselarasan dengan TOR Hackathon Kemenkop 2026
 
@@ -77,7 +77,7 @@ Setiap keputusan teknis di PRD ini diikat ke fakta di atas:
 | **Inovasi & Kreativitas (20%)** | Inter-Kopdes matchmaking = lapisan horizontal yang belum ada di SIMKOPDES/POS manapun |
 | **Dampak & Manfaat (20%)** | Omzet terselamatkan, biaya logistik turun, terhubung laba 97% milik desa, skalabel ke 80.000 Kopdes |
 | **Kemudahan Implementasi (15%)** | Jalan di atas database & SIMKOPDES yang sudah ada — tanpa pengumpulan data baru; PWA low-friction |
-| **Kualitas Teknologi (15%)** | GCP Cloud Run, integrasi Postgres nyata, geospasial, predictive analytics, PWA offline |
+| **Kualitas Teknologi (15%)** | GCP Cloud Run, integrasi Postgres nyata, geospasial, predictive analytics, PWA installable |
 | **Presentasi & Pitch (5%)** | Satu skenario demo yang bercerita (lihat §4) |
 
 ### 1.5 KopdesLink Berjalan di Atas DATA NYATA (bukan data karangan)
@@ -195,7 +195,7 @@ Alur ini menceritakan **ketiga lapisan dalam 1 skenario < 3 menit** — ideal un
 - [ ] **Dashboard Pemerintah**: peta aliran antar-desa + daftar/heatmap barang sering kosong + 3 metrik dampak.
 
 ### 5.2 P1 — JIKA SEMPAT (nilai tambah)
-- [ ] PWA installable + banner offline ("mode offline, akan sinkron").
+- [ ] PWA installable (sudah ada). Offline-first POS (antrean transaksi lokal + banner sinkron) = roadmap, di luar cakupan MVP.
 - [ ] Notifikasi in-app (badge) saat request masuk.
 - [ ] Grafik tren penjualan sederhana per produk.
 - [ ] Toggle "Sinkron dengan SIMKOPDES" (simulasi — menegaskan interoperabilitas).
@@ -219,7 +219,7 @@ Alur ini menceritakan **ketiga lapisan dalam 1 skenario < 3 menit** — ideal un
 
 | Komponen | Pilihan | Alasan |
 |---|---|---|
-| **Frontend** | Next.js (React) + Tailwind, dikonfigurasi **PWA** | Satu codebase web+mobile, offline-friendly sesuai konteks desa |
+| **Frontend** | Next.js (React) + Tailwind, dikonfigurasi **PWA** | Satu codebase web+mobile; PWA installable (offline-first POS di roadmap) |
 | **Peta** | **Leaflet + OpenStreetMap** | Gratis, tanpa API key; cukup untuk pin Kopdes + garis aliran; parse `koordinat_dibulatkan` |
 | **Backend/API** | Next.js API routes / Node (satu service) | Ringkas untuk sprint 24 jam |
 | **Database** | **Shared Postgres hackathon** (`hackathon_2026`) | Sudah berisi data Kopdes nyata (27 tabel); wajib dipakai per fasilitas panitia |
@@ -287,7 +287,7 @@ Asumsi tim 2–4 orang (FE, BE/data, integrasi/demo). Jika solo, kerjakan P0 ber
 | **5–8** | Lapisan 1b | Daftar stok + status; Smart Reorder Alert + estimasi hari-habis |
 | **8–13** | Lapisan 2 ★ | Query Kopdes terdekat; peta Leaflet + pin + info; request B2B → approve; role switcher |
 | **13–16** | Lapisan 3 | Dashboard pemerintah: peta aliran + barang sering kosong + metrik dampak |
-| **16–19** | Polish P1 | PWA/offline banner, notif in-app, toggle "Sinkron SIMKOPDES", tren penjualan |
+| **16–19** | Polish P1 | Polish PWA installable, notif in-app, toggle "Sinkron SIMKOPDES", tren penjualan |
 | **19–22** | Data demo & QA | Rapikan skenario "beras habis", uji happy path lintas peran, perbaiki bug |
 | **22–24** | Pitch | Skrip demo < 3 menit, slide 1-halaman narasi kebijakan, latihan presentasi |
 

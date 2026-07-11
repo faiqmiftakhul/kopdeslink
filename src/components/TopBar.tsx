@@ -56,7 +56,7 @@ export default function TopBar() {
               <button
                 onClick={() => setRole('pemerintah')}
                 className={`rounded-md px-2.5 py-1 transition ${role === 'pemerintah' ? 'bg-leaf-dark text-white shadow-sm' : 'text-slate-500 hover:text-brand-dark'}`}
-              >Agrinas/Dinas</button>
+              >Kementerian/Dinas</button>
             </div>
           </div>
         </div>

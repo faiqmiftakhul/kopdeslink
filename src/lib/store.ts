@@ -2,9 +2,9 @@ import 'server-only';
 import { DATA_SOURCE, MATCH_RADIUS_KM } from './env';
 import { haversineKm } from './geo';
 import { buildStockItem, surplusOf, type StockRaw } from './derive';
-import { MOCK_KOPDES, MOCK_PRODUK, buildMockStock } from './mockData';
+import { MOCK_KOPDES, MOCK_PRODUK, MOCK_REGIONAL, buildMockStock } from './mockData';
 import * as dbRead from './dbStore';
-import type { Kopdes, Produk, StockItem, Match, RequestB2B, DashboardData } from './types';
+import type { Kopdes, Produk, StockItem, Match, RequestB2B, DashboardData, RegionalItem } from './types';
 
 // ============================================================================
 // STORE — satu mesin in-memory untuk seluruh API.
@@ -51,6 +51,11 @@ export async function getKopdesList(): Promise<Kopdes[]> {
 
 export async function getProdukList(): Promise<Produk[]> {
   return (await ensureState()).produk;
+}
+
+export async function getRegional(): Promise<RegionalItem[]> {
+  if (DATA_SOURCE === 'db') return dbRead.loadRegionalStockout();
+  return MOCK_REGIONAL;
 }
 
 export async function getInventory(koperasiRef: string): Promise<StockItem[]> {

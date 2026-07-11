@@ -1,5 +1,22 @@
-import type { Kopdes, Produk } from './types';
+import type { Kopdes, Produk, RegionalItem } from './types';
 import type { StockRaw } from './derive';
+
+// Sebaran barang rawan kosong per provinsi (mock, untuk peta nasional pemerintah).
+export const MOCK_REGIONAL: RegionalItem[] = [
+  { wilayah: 'Jawa Barat', lat: -6.9, lng: 107.6, kritis_count: 42, kopdes_count: 20, top_produk: 'Minyak Goreng 2L' },
+  { wilayah: 'Jawa Timur', lat: -7.6, lng: 112.5, kritis_count: 35, kopdes_count: 16, top_produk: 'Gula Pasir 1kg' },
+  { wilayah: 'Sumatera Selatan', lat: -3.3, lng: 104.0, kritis_count: 28, kopdes_count: 9, top_produk: 'Beras SPHP 5KG' },
+  { wilayah: 'Sulawesi Selatan', lat: -5.1, lng: 119.4, kritis_count: 24, kopdes_count: 8, top_produk: 'Minyak Goreng 2L' },
+  { wilayah: 'Sumatera Utara', lat: 3.0, lng: 98.7, kritis_count: 22, kopdes_count: 8, top_produk: 'Gula Pasir 1kg' },
+  { wilayah: 'Kalimantan Timur', lat: -0.5, lng: 117.1, kritis_count: 20, kopdes_count: 7, top_produk: 'Beras SPHP 5KG' },
+  { wilayah: 'Nusa Tenggara Timur', lat: -10.2, lng: 123.6, kritis_count: 18, kopdes_count: 7, top_produk: 'Beras SPHP 5KG' },
+  { wilayah: 'Nusa Tenggara Barat', lat: -8.6, lng: 116.1, kritis_count: 16, kopdes_count: 6, top_produk: 'Beras SPHP 5KG' },
+  { wilayah: 'Riau', lat: 0.5, lng: 101.4, kritis_count: 15, kopdes_count: 6, top_produk: 'Pupuk Urea 50kg' },
+  { wilayah: 'Papua', lat: -3.3, lng: 138.0, kritis_count: 14, kopdes_count: 4, top_produk: 'Beras SPHP 5KG' },
+  { wilayah: 'DKI Jakarta', lat: -6.2, lng: 106.85, kritis_count: 12, kopdes_count: 6, top_produk: 'LPG 3kg' },
+  { wilayah: 'Sulawesi Tenggara', lat: -4.0, lng: 122.5, kritis_count: 11, kopdes_count: 4, top_produk: 'Minyak Goreng 2L' },
+  { wilayah: 'Bali', lat: -8.4, lng: 115.1, kritis_count: 9, kopdes_count: 5, top_produk: 'Telur Ayam 1kg' },
+];
 
 // ============================================================================
 // DATA CONTOH (mock) — 1 kecamatan, 5 Kopdes, 10 produk.

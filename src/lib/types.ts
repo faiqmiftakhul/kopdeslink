@@ -64,6 +64,15 @@ export interface RequestB2B {
   disetujui_pada: string | null;
 }
 
+export interface RegionalItem {
+  wilayah: string;      // nama provinsi
+  lat: number;
+  lng: number;
+  kritis_count: number; // jumlah item stok kosong/kritis di wilayah
+  kopdes_count: number;
+  top_produk: string;   // barang paling sering kosong di wilayah
+}
+
 export interface DashboardData {
   total_kopdes: number;
   total_request: number;

@@ -20,7 +20,7 @@ Hackathon Digital Cooperatives Expo — Kementerian Koperasi 2026 · Tim **Indon
 
 | Lapisan | Teknologi |
 |---|---|
-| Frontend | **Next.js 14 (App Router)** + React + Tailwind, dikonfigurasi **PWA** (offline-friendly) |
+| Frontend | **Next.js 14 (App Router)** + React + Tailwind, dikonfigurasi **PWA** (installable; offline-first POS di roadmap) |
 | Peta | **Leaflet + OpenStreetMap** (tanpa API key) |
 | API | Next.js Route Handlers (Node runtime) |
 | Data | **Shared Postgres hackathon** (`hackathon_2026`, READ-ONLY) via `pg` — atau **mode mock** tanpa DB |

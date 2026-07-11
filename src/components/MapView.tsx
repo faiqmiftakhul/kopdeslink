@@ -10,17 +10,17 @@ export interface MapLine {
 }
 
 export default function MapView({
-  markers, lines = [], height = 360,
-}: { markers: MapMarker[]; lines?: MapLine[]; height?: number }) {
-  const pts = markers.length ? markers : [{ lat: -6.9, lng: 107.63, label: '', color: '#065366' }];
-  const center: [number, number] = [
+  markers, lines = [], height = 360, zoom, center: centerProp,
+}: { markers: MapMarker[]; lines?: MapLine[]; height?: number; zoom?: number; center?: [number, number] }) {
+  const pts = markers.length ? markers : [{ lat: -2.5, lng: 118, label: '', color: '#065366' }];
+  const center: [number, number] = centerProp ?? [
     pts.reduce((s, m) => s + m.lat, 0) / pts.length,
     pts.reduce((s, m) => s + m.lng, 0) / pts.length,
   ];
 
   return (
     <div style={{ height }} className="overflow-hidden rounded-xl border border-slate-200">
-      <MapContainer center={center} zoom={12} scrollWheelZoom={false}>
+      <MapContainer center={center} zoom={zoom ?? 12} scrollWheelZoom={false}>
         <TileLayer
           attribution='&copy; OpenStreetMap'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
